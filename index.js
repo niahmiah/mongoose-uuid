@@ -60,63 +60,6 @@ SchemaUUID.prototype.cast = function (value) {
 };
 
 /*!
- * UUID Query casting.
- *
- * @api private
- */
-
-function handleSingle (val) {
-  return this.cast(val);
-}
-
-function handleArray (val) {
-  var self = this;
-  if (!Array.isArray(val)) {
-    return [this.cast(val)];
-  }
-  return val.map( function (m) {
-    return self.cast(m);
-  });
-}
-
-SchemaUUID.prototype.$conditionalHandlers =
-  utils.options(SchemaType.prototype.$conditionalHandlers, {
-    '$all': handleArray,
-    '$gt': handleSingle,
-    '$gte': handleSingle,
-    '$in': handleArray,
-    '$lt': handleSingle,
-    '$lte': handleSingle,
-    '$ne': handleSingle,
-    '$nin': handleArray
-  });
-
-
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [value]
- * @api private
- */
-
-SchemaUUID.prototype.castForQuery = function ($conditional, val) {
-  var handler;
-
-  if (2 !== arguments.length) {
-    return this.cast($conditional);
-  }
-
-  handler = this.$conditionalHandlers[$conditional];
-
-  if (!handler) {
-    throw new Error("Can't use " + $conditional + " with UUID.");
-  }
-
-  return handler.call(this, val);
-};
-
-/*!
  * Module exports.
  */
 
