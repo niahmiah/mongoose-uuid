@@ -3,6 +3,7 @@
  * Module requirements.
  */
 var mongoose = require('mongoose');
+var bson = require('bson');
 var util = require('util');
 var uuid = require('node-uuid');
 
@@ -39,7 +40,7 @@ SchemaUUID.prototype.cast = function (value) {
   if (value == null || value === '')
     return value;
 
-  if (value instanceof Array && value.lenth === 16)
+  if (value instanceof Buffer && value.lenth === 16)
     return value;
 
   var uuidBuffer;
@@ -48,12 +49,13 @@ SchemaUUID.prototype.cast = function (value) {
   if (typeof value !== 'undefined') {
     if (typeof value === 'string') {
       // support for uuid strings
-      uuidBuffer = uuid.parse(value);
-      return uuidBuffer;
+      uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
+      uuidBuffer.subtype(bson.BSON_SUBTYPE_UUID);
+      return uuidBuffer.toObject();
     }
   }
 
-  throw new Error('Could not cast ' + value + 'to uuid buffer.');
+  throw new Error('Could not cast ' + value + 'to uuid.');
 };
 
 module.exports.loadType = function loadType(mongoose){
