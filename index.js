@@ -50,7 +50,7 @@ SchemaUUID.prototype.cast = function (value) {
     if (typeof value === 'string') {
       // support for uuid strings
       uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
-      uuidBuffer.subtype(bson.BSON_SUBTYPE_UUID);
+      uuidBuffer.subtype(bson.SUBTYPE_UUID);
       return uuidBuffer.toObject();
     }
   }
