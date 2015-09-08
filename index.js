@@ -17,7 +17,7 @@ function SchemaUUID(path, options){
 /*!
  * Inherits from SchemaType.
  */
-util.inherits(Currency, mongoose.SchemaTypes.Buffer);
+util.inherits(SchemaUUID, mongoose.SchemaTypes.Buffer);
 
 
 SchemaUUID.schemaName = 'UUID';
