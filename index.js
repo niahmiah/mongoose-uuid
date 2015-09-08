@@ -40,7 +40,7 @@ SchemaUUID.prototype.cast = function (value) {
   if (value == null || value === '')
     return value;
 
-  if (value instanceof Buffer && value.length === 16)
+  if (value instanceof mongoose.Types.Buffer.Binary)
     return value;
 
   var uuidBuffer;
@@ -55,7 +55,20 @@ SchemaUUID.prototype.cast = function (value) {
     }
   }
 
-  throw new Error('Could not cast ' + value + 'to uuid.');
+  throw new Error('Could not cast ' + value + ' to uuid.');
+};
+
+SchemaUUID.prototype.castForQuery = function ($conditional, val) {
+  var handler;
+  if (arguments.length === 2) {
+    handler = this.$conditionalHandlers[$conditional];
+    if (!handler)
+      throw new Error("Can't use " + $conditional + " with Buffer.");
+    return handler.call(this, val);
+  } else {
+    val = $conditional;
+    return this.cast(val);
+  }
 };
 
 module.exports.loadType = function loadType(mongoose){
