@@ -40,7 +40,7 @@ SchemaUUID.prototype.cast = function (value) {
   if (value == null || value === '')
     return value;
 
-  if (value instanceof Buffer && value.lenth === 16)
+  if (value instanceof Buffer && value.length === 16)
     return value;
 
   var uuidBuffer;
