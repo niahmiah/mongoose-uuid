@@ -6,10 +6,6 @@ var mongoose = require('mongoose');
 var util = require('util');
 var uuid = require('node-uuid');
 
-module.exports.loadType = function loadType(mongoose){
-  mongoose.Types.UUID = mongoose.SchemaTypes.UUID = SchemaUUID;
-}
-
 function SchemaUUID(path, options){
   mongoose.SchemaTypes.Buffer.call(this, path, options);
 }
@@ -59,8 +55,6 @@ SchemaUUID.prototype.cast = function (value) {
   throw new Error('Could not cast ' + value + 'to uuid buffer.');
 };
 
-/*!
- * Module exports.
- */
-
-module.exports = SchemaUUID;
+module.exports.loadType = function loadType(mongoose){
+  mongoose.Types.UUID = mongoose.SchemaTypes.UUID = SchemaUUID;
+}
