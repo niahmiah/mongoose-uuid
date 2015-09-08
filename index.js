@@ -49,6 +49,7 @@ SchemaUUID.prototype.cast = function (value) {
     if (typeof value === 'string') {
       // support for uuid strings
       uuidBuffer = uuid.parse(value);
+      return uuidBuffer;
     }
   }
 

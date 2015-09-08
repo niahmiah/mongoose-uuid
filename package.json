@@ -1,6 +1,6 @@
 {
   "name": "mongoose-uuid",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "UUID schema type for mongoose",
   "main": "index.js",
   "scripts": {
