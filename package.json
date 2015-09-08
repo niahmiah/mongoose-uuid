@@ -1,0 +1,15 @@
+{
+  "name": "mongoose-uuid",
+  "version": "1.0.0",
+  "description": "UUID schema type for mongoose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ian Patton <ian.patton@gmail.com> (http://github.com/niahmiah)",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^4.1.5",
+    "node-uuid": "^1.4.3"
+  }
+}
