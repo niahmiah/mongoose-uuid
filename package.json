@@ -1,10 +1,10 @@
 {
   "name": "mongoose-uuid2",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "UUID schema type for mongoose",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Ian Patton <ian.patton@gmail.com> (http://github.com/niahmiah)",
   "license": "ISC",
@@ -18,5 +18,9 @@
     "uuid",
     "schema",
     "type"
-  ]
+  ],
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.3.2"
+  }
 }

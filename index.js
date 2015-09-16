@@ -7,8 +7,34 @@ var bson = require('bson');
 var util = require('util');
 var uuid = require('node-uuid');
 
+function getter (binary){
+  var len = binary.length();
+
+  var b = binary.read(0,len);
+
+  var buf = new Buffer(len);
+
+  for (var i = 0; i < len; i++)
+    buf[i] = b[i];
+
+  var hex = '';
+
+  for (var i = 0; i < len; i++)
+  {
+    var n = buf.readUInt8(i);
+    if (n < 16)
+      hex += '0'+n.toString(16);
+    else
+      hex += n.toString(16);
+  }
+
+  var uuidStr = hex.substr(0, 8) + '-' + hex.substr(8, 4) + '-' + hex.substr(12, 4) + '-' + hex.substr(16, 4) + '-' + hex.substr(20, 12);
+  return uuidStr;
+}
+
 function SchemaUUID(path, options){
   mongoose.SchemaTypes.Buffer.call(this, path, options);
+  this.getters.push(getter);
 }
 
 /*!
