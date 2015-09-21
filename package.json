@@ -4,7 +4,8 @@
   "description": "UUID schema type for mongoose",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha"
   },
   "author": "Ian Patton <ian.patton@gmail.com> (http://github.com/niahmiah)",
   "license": "ISC",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "chai": "^3.2.0",
     "coveralls": "^2.11.4",
+    "istanbul": "^0.3.20",
     "mocha": "^2.3.2"
   }
 }
