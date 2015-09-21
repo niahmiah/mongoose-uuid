@@ -10,7 +10,8 @@ MongoDB supports storing UUID v1 and v4 in Binary format. Why not take advantage
 ## What does it do?
 This will add an additional UUID type to mongoose. When used instead of String, UUIDs will be stored in Binary format, which takes about half as much space.
 
-This also makes it easy for you to continue to work with UUIDs as strings in your application. It automatically casts Strings to Binary, and when read a document from the database, and you access a property directly, (or use .toObject()), you get the value back as a String.
+This also makes it easy for you to continue to work with UUIDs as strings in your application. It automatically casts Strings to Binary, and when read a document from the database, and you access a property directly, you get the value back as a String.
+
 
 ## How to use
 
@@ -28,10 +29,27 @@ var ProductSchema = Schema({
 });
 
 var Product = mongoose.model('Product', ProductSchema);
+```
+## Example
+```JavaScript
+> var product = new Product({ someID: '7c401d91-3852-4818-985d-7e7b79f771c3' });
+> console.log(product);
+{ someID:
+   { _bsontype: 'Binary',
+     sub_type: 4,
+     position: 16,
+     buffer: <Buffer 7c 40 1d 91 38 52 48 18 98 5d 7e 7b 79 f7 71 c3> },
+  _id: 5600830cec3daaf37e9d372e }
 
-var product = new Product({ someID: '7c401d91-3852-4818-985d-7e7b79f771c3' });
-product.someID; // Array: [ 124, 64, 29, 145, 56, 82, 72, 24, 152, 93, 126, 123, 121, 247, 113, 195 ]
-product.someID = '48c53f87-21f6-4dee-92f2-f241f942285d';
-product.someID; // Array: [ 72, 197, 63, 135, 33, 246, 77, 238, 146, 242, 242, 65, 249, 66, 40, 93 ]
-uuid.unparse(product.someID); // '48c53f87-21f6-4dee-92f2-f241f942285d';
+> product.someID = '48c53f87-21f6-4dee-92f2-f241f942285d';
+> console.log(product);
+{ someID:
+   { _bsontype: 'Binary',
+     sub_type: 4,
+     position: 16,
+     buffer: <Buffer 48 c5 3f 87 21 f6 4d ee 92 f2 f2 41 f9 42 28 5d> },
+  _id: 5600830cec3daaf37e9d372e }
+
+> console.log(product.someID);
+48c53f87-21f6-4dee-92f2-f241f942285d
 ```
