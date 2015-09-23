@@ -8,6 +8,7 @@ var util = require('util');
 var uuid = require('node-uuid');
 
 function getter (binary){
+  if(!binary) return '';
   var len = binary.length();
 
   var b = binary.read(0,len);
