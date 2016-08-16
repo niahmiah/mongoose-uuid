@@ -52,7 +52,7 @@ SchemaUUID.schemaName = 'UUID';
  */
 
 SchemaUUID.prototype.checkRequired = function (value) {
-  return value instanceof Array;
+  return value instanceof mongoose.Types.Buffer.Binary;
 };
 
 /**
