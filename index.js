@@ -1,11 +1,11 @@
 'use strict';
-/*!
- * Module requirements.
- */
+
 var mongoose = require('mongoose');
 var bson = require('bson');
 var util = require('util');
 var uuid = require('node-uuid');
+
+var Document = mongoose.Document;
 
 function getter (binary){
   if(!binary) return '';
@@ -38,48 +38,71 @@ function SchemaUUID(path, options){
   this.getters.push(getter);
 }
 
-/*!
- * Inherits from SchemaType.
- */
 util.inherits(SchemaUUID, mongoose.SchemaTypes.Buffer);
 
 
 SchemaUUID.schemaName = 'UUID';
-/**
- * Required validator for uuid
- *
- * @api private
- */
 
 SchemaUUID.prototype.checkRequired = function (value) {
   return value instanceof mongoose.Types.Buffer.Binary;
 };
 
-/**
- * Casts to uuid
- *
- * @param {Object} value to cast
- * @api private
- */
+SchemaUUID.prototype.cast = function (value, doc, init) {
+  if (mongoose.SchemaType._isRef(this, value, doc, init)) {
+    // wait! we may need to cast this to a document
 
-SchemaUUID.prototype.cast = function (value) {
-  // If null or undefined
-  if (value == null || value === '')
+    if (value === null || value === undefined) {
+      return value;
+    }
+
+    if (value instanceof Document) {
+      value.$__.wasPopulated = true;
+      return value;
+    }
+
+    // setting a populated path
+    if (value instanceof mongoose.Types.Buffer.Binary) {
+      return value;
+    } else if (typeof value === 'string') {
+      uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
+      uuidBuffer.subtype(bson.SUBTYPE_UUID);
+      return uuidBuffer.toObject();
+    } else if (Buffer.isBuffer(value) || !utils.isObject(value)) {
+      throw new CastError('UUID', value, this.path);
+    }
+
+    // Handle the case where user directly sets a populated
+    // path to a plain object; cast to the Model used in
+    // the population query.
+    var path = doc.$__fullPath(this.path);
+    var owner = doc.ownerDocument ? doc.ownerDocument() : doc;
+    var pop = owner.populated(path, true);
+    var ret = value;
+    if (!doc.$__.populated ||
+        !doc.$__.populated[path] ||
+        !doc.$__.populated[path].options ||
+        !doc.$__.populated[path].options.options ||
+        !doc.$__.populated[path].options.options.lean) {
+      ret = new pop.options.model(value);
+      ret.$__.wasPopulated = true;
+    }
+
+    return ret;
+  }
+
+  if (value === null || value === undefined) {
     return value;
+  }
 
   if (value instanceof mongoose.Types.Buffer.Binary)
     return value;
 
   var uuidBuffer;
 
-  // support for timestamps
-  if (typeof value !== 'undefined') {
-    if (typeof value === 'string') {
-      // support for uuid strings
-      uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
-      uuidBuffer.subtype(bson.SUBTYPE_UUID);
-      return uuidBuffer.toObject();
-    }
+  if (typeof value === 'string') {
+    uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
+    uuidBuffer.subtype(bson.SUBTYPE_UUID);
+    return uuidBuffer.toObject();
   }
 
   throw new Error('Could not cast ' + value + ' to uuid.');

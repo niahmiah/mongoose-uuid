@@ -12,6 +12,7 @@ This will add an additional UUID type to mongoose. When used instead of String, 
 
 This also makes it easy for you to continue to work with UUIDs as strings in your application. It automatically casts Strings to Binary, and when read a document from the database, and you access a property directly, you get the value back as a String.
 
+**New: Query population now works correctly!**
 
 ## How to use
 
@@ -23,33 +24,49 @@ var Schema = mongoose.Schema;
 require('mongoose-uuid2').loadType(mongoose);
 var UUID = mongoose.Types.UUID;
 
-// If you don't have the UUID variable declared you can use 'mongoose.Types.UUID'
 var ProductSchema = Schema({
-  someID: { type: UUID }
-});
+  _id: { type: UUID, default: uuid.v4 },
+  name: String
+}, { id: false });
+
+var PhotoSchema = Schema({
+  _id: { type: UUID, default: uuid.v4 },
+  filename: String,
+  product: { type: UUID, ref: 'Product' }
+}, { id: false });
+
+ProductSchema.set('toObject', {getters: true});
+ProductSchema.set('toJSON', {getters: true});
 
 var Product = mongoose.model('Product', ProductSchema);
+
+PhotoSchema.set('toObject', {getters: true});
+PhotoSchema.set('toJSON', {getters: true});
+
+var Photo = mongoose.model('Photo', PhotoSchema);
+
 ```
 ## Example
 ```JavaScript
-> var product = new Product({ someID: '7c401d91-3852-4818-985d-7e7b79f771c3' });
+> var product = new Product({ _id: '7c401d91-3852-4818-985d-7e7b79f771c3' });
 > console.log(product);
-{ someID:
+{ _id:
    { _bsontype: 'Binary',
      sub_type: 4,
      position: 16,
-     buffer: <Buffer 7c 40 1d 91 38 52 48 18 98 5d 7e 7b 79 f7 71 c3> },
-  _id: 5600830cec3daaf37e9d372e }
+     buffer: <Buffer 7c 40 1d 91 38 52 48 18 98 5d 7e 7b 79 f7 71 c3> } }
 
-> product.someID = '48c53f87-21f6-4dee-92f2-f241f942285d';
+  console.log(product.toObject());
+  { _id: "7c401d91-3852-4818-985d-7e7b79f771c3" }
+
+> product._id = '48c53f87-21f6-4dee-92f2-f241f942285d';
 > console.log(product);
-{ someID:
+{ _id:
    { _bsontype: 'Binary',
      sub_type: 4,
      position: 16,
-     buffer: <Buffer 48 c5 3f 87 21 f6 4d ee 92 f2 f2 41 f9 42 28 5d> },
-  _id: 5600830cec3daaf37e9d372e }
+     buffer: <Buffer 48 c5 3f 87 21 f6 4d ee 92 f2 f2 41 f9 42 28 5d> } }
 
-> console.log(product.someID);
+> console.log(product._id);
 48c53f87-21f6-4dee-92f2-f241f942285d
 ```
