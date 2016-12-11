@@ -8,7 +8,7 @@ var uuid = require('node-uuid');
 var Document = mongoose.Document;
 
 function getter (binary){
-  if(!binary) return '';
+  if(!binary) return undefined;
   var len = binary.length();
 
   var b = binary.read(0,len);
@@ -64,10 +64,10 @@ SchemaUUID.prototype.cast = function (value, doc, init) {
     if (value instanceof mongoose.Types.Buffer.Binary) {
       return value;
     } else if (typeof value === 'string') {
-      uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
+      var uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
       uuidBuffer.subtype(bson.SUBTYPE_UUID);
       return uuidBuffer.toObject();
-    } else if (Buffer.isBuffer(value) || !utils.isObject(value)) {
+    } else if (Buffer.isBuffer(value) || !util.isObject(value)) {
       throw new CastError('UUID', value, this.path);
     }
 
@@ -121,6 +121,6 @@ SchemaUUID.prototype.castForQuery = function ($conditional, val) {
   }
 };
 
-module.exports.loadType = function loadType(mongoose){
+module.exports = function (mongoose){
   mongoose.Types.UUID = mongoose.SchemaTypes.UUID = SchemaUUID;
 }
