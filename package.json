@@ -8,6 +8,10 @@
     "coverage": "istanbul cover _mocha"
   },
   "author": "Ian Patton <ian.patton@gmail.com> (http://github.com/niahmiah)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niahmiah/mongoose-uuid.git"
+  },
   "license": "ISC",
   "dependencies": {
     "bson": "~0.4",
