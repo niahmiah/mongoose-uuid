@@ -9,7 +9,8 @@ var Document = mongoose.Document;
 
 function getter (binary){
   if(!binary) return undefined;
-  if(binary instanceof Document) return binary;
+  if(!(binary instanceof mongoose.Types.Buffer.Binary)) return binary;
+
   
   var len = binary.length();
 
