@@ -14,6 +14,7 @@ This will add an additional UUID type to mongoose. When used instead of String, 
 This also makes it easy for you to continue to work with UUIDs as strings in your application. It automatically casts Strings to Binary, and when read a document from the database, and you access a property directly, you get the value back as a String.
 
 **New: Query population now works correctly!**
+**Updated with dependency on mongoose 5**
 
 ## How to use
 

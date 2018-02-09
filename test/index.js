@@ -125,7 +125,7 @@ describe('mongoose-uuid', function(){
 
   describe('other scenarios', function() {
     var uuidBuffer = new mongoose.Types.Buffer(uuid.v4());
-    uuidBuffer.subtype(bson.SUBTYPE_UUID);
+    uuidBuffer.subtype(bson.Binary.SUBTYPE_UUID);
 
     var BoatSchema = Schema({
       _id: { type: UUID, default: uuid.v4 },

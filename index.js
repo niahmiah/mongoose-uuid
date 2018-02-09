@@ -68,7 +68,7 @@ SchemaUUID.prototype.cast = function (value, doc, init) {
       return value;
     } else if (typeof value === 'string') {
       var uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
-      uuidBuffer.subtype(bson.SUBTYPE_UUID);
+      uuidBuffer.subtype(bson.Binary.SUBTYPE_UUID);
       return uuidBuffer.toObject();
     } else if (Buffer.isBuffer(value) || !util.isObject(value)) {
       throw new CastError('UUID', value, this.path);
@@ -104,7 +104,7 @@ SchemaUUID.prototype.cast = function (value, doc, init) {
 
   if (typeof value === 'string') {
     uuidBuffer = new mongoose.Types.Buffer(uuid.parse(value));
-    uuidBuffer.subtype(bson.SUBTYPE_UUID);
+    uuidBuffer.subtype(bson.Binary.SUBTYPE_UUID);
     return uuidBuffer.toObject();
   }
 
