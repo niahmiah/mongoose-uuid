@@ -1,6 +1,6 @@
 {
   "name": "mongoose-uuid2",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "UUID schema type for mongoose",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,10 @@
   "dependencies": {
     "bson": "^3.0.2",
     "debug": "^3.1.0",
-    "mongoose": "^5.0.3",
     "uuid-parse": "^1.0.0"
+  },
+  "peerDependencies": {
+    "mongoose": "5.x"
   },
   "keywords": [
     "mongoose",
