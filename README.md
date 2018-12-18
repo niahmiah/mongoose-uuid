@@ -19,7 +19,7 @@ This also makes it easy for you to continue to work with UUIDs as strings in you
 ## How to use
 
 ```JavaScript
-var uuid = require('node-uuid');
+var uuidv4 = require('uuid/v4');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 // Will add the UUID type to the Mongoose Schema types
@@ -27,12 +27,12 @@ require('mongoose-uuid2')(mongoose);
 var UUID = mongoose.Types.UUID;
 
 var ProductSchema = Schema({
-  _id: { type: UUID, default: uuid.v4 },
+  _id: { type: UUID, default: uuidv4 },
   name: String
 }, { id: false });
 
 var PhotoSchema = Schema({
-  _id: { type: UUID, default: uuid.v4 },
+  _id: { type: UUID, default: uuidv4 },
   filename: String,
   product: { type: UUID, ref: 'Product' }
 }, { id: false });
