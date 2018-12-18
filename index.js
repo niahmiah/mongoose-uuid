@@ -80,3 +80,5 @@ SchemaUUID.prototype.castForQuery = function($conditional, val) {
 module.exports = function(mongoose) {
   mongoose.Types.UUID = mongoose.SchemaTypes.UUID = SchemaUUID;
 }
+
+module.exports.UUID = SchemaUUID
